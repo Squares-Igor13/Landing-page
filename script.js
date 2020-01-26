@@ -38,11 +38,60 @@ window.addEventListener('DOMContentLoaded', function() {
 	})
 
 
+	//Timer ------------------------------------------
 
 
+	let deadLine = '2020-04-26'
 
+	function getTimeRemaining(endTime) {
+		let t = Date.parse(endTime) - Date.parse(new Date()),
+			
+			minutes = Math.floor((t/1000/60) % 60),
+			hours = Math.floor((t/1000/60/60)),
+			seconds = Math.floor((t/1000) % 60)
 
+			return {
+				'total': t,
+				'hours': hours,
+				'minutes': minutes,
+				'seconds': seconds
+			};
+	}
+	
 
+	function setClock(id, endTime) {
+		let timer = document.getElementById(id),
+			hours = timer.querySelector('.hours'),
+			minutes = timer.querySelector('.minutes'),
+			seconds = timer.querySelector('.seconds'),
+			timeInterval = setInterval(updateClock, 1000)
+
+		function updateClock() {
+			
+			let t = getTimeRemaining(endTime)
+			hours.textContent = update(t.hours)
+			minutes.textContent = update(zero(t.minutes))
+			seconds.textContent = update(zero(t.seconds))
+
+			if(t.total <= 0) {
+				clearInterval(timeInterval)
+			}
+		}
+	}
+
+	setClock('timer', deadLine)
+
+	function update(num) {
+		return (num < 0) ? '00' : num
+	}
+
+	function zero(num) {
+		if(num < 10 && num > 0) {
+			return num = '0' + num
+		} else {
+			return num
+		}
+	}
 
 
 
