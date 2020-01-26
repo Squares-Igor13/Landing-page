@@ -38,7 +38,7 @@ window.addEventListener('DOMContentLoaded', function() {
 	})
 
 
-	//Timer ------------------------------------------
+	//Timer ----13--------------------------------------
 
 
 	let deadLine = '2020-04-26'
