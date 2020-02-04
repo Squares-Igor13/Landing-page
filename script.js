@@ -1,3 +1,6 @@
+// -------------------Tabs-----------------------
+
+
 window.addEventListener('DOMContentLoaded', function() {
 
 	'use strict'
@@ -45,10 +48,10 @@ window.addEventListener('DOMContentLoaded', function() {
 
 	function getTimeRemaining(endTime) {
 		let t = Date.parse(endTime) - Date.parse(new Date()),
-			
+			seconds = Math.floor((t/1000) % 60),
 			minutes = Math.floor((t/1000/60) % 60),
-			hours = Math.floor((t/1000/60/60)),
-			seconds = Math.floor((t/1000) % 60)
+			hours = Math.floor((t/1000/60/60))
+			
 
 			return {
 				'total': t,
@@ -57,21 +60,29 @@ window.addEventListener('DOMContentLoaded', function() {
 				'seconds': seconds
 			};
 	}
+	console.log(getTimeRemaining(deadLine))
 	
 
 	function setClock(id, endTime) {
+
+		
 		let timer = document.getElementById(id),
 			hours = timer.querySelector('.hours'),
 			minutes = timer.querySelector('.minutes'),
 			seconds = timer.querySelector('.seconds'),
-			timeInterval = setInterval(updateClock, 1000)
+			// показываем время сразу при открытии страницы
+			t = getTimeRemaining(endTime)
+			hours.textContent = stopZero(t.hours)
+			minutes.textContent = stopZero(zero(t.minutes))
+			seconds.textContent = stopZero(zero(t.seconds))
+		let	timeInterval = setInterval(updateClock, 1000)
 
 		function updateClock() {
 			
 			let t = getTimeRemaining(endTime)
-			hours.textContent = update(t.hours)
-			minutes.textContent = update(zero(t.minutes))
-			seconds.textContent = update(zero(t.seconds))
+			hours.textContent = stopZero(t.hours)
+			minutes.textContent = stopZero(zero(t.minutes))
+			seconds.textContent = stopZero(zero(t.seconds))
 
 			if(t.total <= 0) {
 				clearInterval(timeInterval)
@@ -81,12 +92,12 @@ window.addEventListener('DOMContentLoaded', function() {
 
 	setClock('timer', deadLine)
 
-	function update(num) {
+	function stopZero(num) {
 		return (num < 0) ? '00' : num
 	}
 
 	function zero(num) {
-		if(num < 10 && num > 0) {
+		if(num < 10 && num >= 0) {
 			return num = '0' + num
 		} else {
 			return num
@@ -95,6 +106,66 @@ window.addEventListener('DOMContentLoaded', function() {
 
 
 
+// Modal--------------------------------------------
+
+
+let more = document.querySelector('.more'),
+	overlay = document.querySelector('.overlay'),
+	close = document.querySelector('.popup-close')
+	
+
+// нажимаем на кнопку "узнать больше"
+more.addEventListener('click', function() {
+	overlay.style.display = 'block'
+	this.classList.add('more-splach')
+	//запретим прокрутку страницы как только открывается модальное окно
+	document.body.style.overflow = 'hidden'
+})
+
+// нажимаем на крестик
+close.addEventListener('click', function() {
+	overlay.style.display = 'none'
+	more.classList.add('more-splach')
+	document.body.style.overflow = ''
+})
+
+
+// Modal in tabs--------------------
+
+	/*получаем все кнопки "узнать больше в табах"
+	крестик используем с верхнего модального окна*/
+
+	let moreTabs = document.querySelectorAll('.description-btn')
+
+	for(let mt of moreTabs) {
+		mt.addEventListener('click', function() {
+			overlay.style.display = 'block'
+			this.classList.add('more-splach')
+			document.body.style.overflow = 'hidden'
+		})
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 })
+
+
